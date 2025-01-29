@@ -337,6 +337,8 @@ function moveWorker(b, d) {
   document.getElementById('step').innerHTML = steps.length;
   if (allArrived(myBoard.board, myBoard.destinations)) {
     message.innerHTML = 'All boxes arrived.';
+    document.getElementById('inputUsername').value = username;
+    document.getElementById('inputSteps').value = steps.join('');
   }
 }
 

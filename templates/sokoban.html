@@ -21,9 +21,11 @@ Step: <span id='step'></span>
 </font>
 <div id='message'></div>
 
-<form>
+<form action='/record-and-next' method=post>
 <input type=submit value='Next'>
-<input type=hidden name='level' value={{level+1}}>
+<input type=hidden name='level' value={{level}}>
+<input type=hidden name='username' id='inputUsername'>
+<input type=hidden name='steps' id='inputSteps'>
 </form>
 
 <form>
