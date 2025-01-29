@@ -1,19 +1,28 @@
 <head>
 <title>Sokoban</title>
 <!-- todo>
-1. username
+1. Next/Previous
 2. movement
-3. finger swipe
 </todo -->
 </head>
 
 <body>
-Level: <span id='level'></span>
+<table>
+<tr><td> Level: <span id='level'></span>
 Best: <span id='best'></span>
+</td></tr>
+<tr><td>
+Username: <span id='username'></span>
 Step: <span id='step'></span>
+</td></tr>
+</table>
+
 <font id='font' face='Courier New' size=3><div id="boardArea"></div>
 </font>
 <div id='message'></div>
+
+<button id='inputUsername'>Username</button>
+
 </body>
 
 <script>

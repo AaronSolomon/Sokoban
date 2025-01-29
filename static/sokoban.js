@@ -13,6 +13,47 @@ let myBoard = readBoard(board)
 let steps = [];
 showBoard(myBoard);
 document.addEventListener('keydown', k);
+
+// Check whether username is defined in cookie
+const cookies = parseCookies(document.cookie);
+let username;
+if ('username' in cookies) {
+  username = cookies.username;
+  document.getElementById('username').innerHTML = username;
+} else {
+  username = purifyStr(prompt("Please input your username"));
+  updateUsername(username);
+}
+document.getElementById('inputUsername').addEventListener('click', inputUsername);
+
+function purifyStr(s) {
+  const punctuations = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+  for (const c in punctuations)
+    s = s.replaceAll(c, '');
+  return s;
+}
+
+function updateUsername(u) {
+  username=u;
+  document.getElementById('username').innerHTML = u;
+  document.cookie = `username=${u}`;
+}
+
+function inputUsername () {
+  username = purifyStr(prompt("Please input your username", username));
+  updateUsername(username);
+}
+function parseCookies(cookieString) {   
+    let cookies = {};
+    cookieString.split(';').map( pair => {      
+        const [key, value] = pair.split('=').map(x => x.trim());
+        cookies[key] = decodeURIComponent(value);
+    } );
+    return cookies;
+}
+
+
+
 const boardArea = document.getElementById('boardArea');
 // Add event listeners for touch events
 boardArea.addEventListener("touchstart", (event) => {
