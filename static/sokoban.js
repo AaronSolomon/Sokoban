@@ -24,7 +24,14 @@ if ('username' in cookies) {
   username = purifyStr(prompt("Please input your username"));
   updateUsername(username);
 }
-document.getElementById('inputUsername').addEventListener('click', inputUsername);
+document.getElementById('editUsername').addEventListener('click', editUsername);
+
+// Check whether the server sends a greeting message via cookie
+if ('msg' in cookies) {
+  alert(cookies.msg);
+  // Delete the cookie 'msg'
+  document.cookie = 'msg = delete; expires=Thu, 1 Jan 1970 00:00:00 UTC';
+}
 
 function purifyStr(s) {
   const punctuations = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
@@ -39,7 +46,8 @@ function updateUsername(u) {
   document.cookie = `username=${u}`;
 }
 
-function inputUsername () {
+function editUsername () {
+  // console.log("editUsername");
   username = purifyStr(prompt("Please input your username", username));
   updateUsername(username);
 }
@@ -163,11 +171,11 @@ function showBoard(m) {
         }
         html += '<br />\n';
     }
-    if (m.best == 0) {
-       document.getElementById("best").innerHTML = "---";
-    } else {
-       document.getElementById("best").innerHTML = m.best;
-    }
+    // if (m.best == 0) {
+    //    document.getElementById("best").innerHTML = "---";
+    //} else {
+    //   document.getElementById("best").innerHTML = m.best;
+    //}
     document.getElementById("level").innerHTML = m.level;
     document.getElementById("boardArea").innerHTML = html;
 }
@@ -339,6 +347,7 @@ function moveWorker(b, d) {
     message.innerHTML = 'All boxes arrived.';
     document.getElementById('inputUsername').value = username;
     document.getElementById('inputSteps').value = steps.join('');
+    document.getElementById('next').focus();
   }
 }
 

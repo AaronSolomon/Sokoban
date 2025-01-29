@@ -1,28 +1,26 @@
+<html>
 <head>
+<meta charset="utf-8" />
 <title>Sokoban</title>
-<!-- todo>
-1. Next/Previous
-2. movement
-</todo -->
 </head>
 
 <body>
 <table>
-<tr><td> Level: <span id='level'></span>
-Best: <span id='best'></span>
+<tr><td> <B>Level:</B> <span id='level'></span></td>
+    <td><B>Best:</B> <span id='best'>{{best}}</span>
 </td></tr>
 <tr><td>
-Username: <span id='username'></span>
-Step: <span id='step'></span>
+<B>Username:</B> <span id='username'></span></td>
+<td><B>Step:</B> <span id='step'></span>
 </td></tr>
 </table>
 
-<font id='font' face='Courier New' size=3><div id="boardArea"></div>
+<font id='font' face='Courier New' size=5><div id="boardArea"></div>
 </font>
 <div id='message'></div>
 
 <form action='/record-and-next' method=post>
-<input type=submit value='Next'>
+<input type=submit value='Next' id='next'>
 <input type=hidden name='level' value={{level}}>
 <input type=hidden name='username' id='inputUsername'>
 <input type=hidden name='steps' id='inputSteps'>
@@ -33,7 +31,7 @@ Step: <span id='step'></span>
 <input type=hidden name='level' value={{level-1}}>
 </form>
 
-<button id='inputUsername'>Username</button>
+<button id='editUsername'>Username</button>
 
 </body>
 
@@ -45,3 +43,4 @@ const board =
 </script>
 
 <script src=/static/sokoban.js></script>
+</html>
