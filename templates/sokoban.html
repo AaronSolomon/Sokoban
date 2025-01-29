@@ -21,6 +21,16 @@ Step: <span id='step'></span>
 </font>
 <div id='message'></div>
 
+<form>
+<input type=submit value='Next'>
+<input type=hidden name='level' value={{level+1}}>
+</form>
+
+<form>
+<input type=submit value='Previous'>
+<input type=hidden name='level' value={{level-1}}>
+</form>
+
 <button id='inputUsername'>Username</button>
 
 </body>

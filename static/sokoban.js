@@ -28,7 +28,7 @@ document.getElementById('inputUsername').addEventListener('click', inputUsername
 
 function purifyStr(s) {
   const punctuations = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
-  for (const c in punctuations)
+  for (const c of punctuations)
     s = s.replaceAll(c, '');
   return s;
 }
