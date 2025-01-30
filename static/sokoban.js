@@ -3,15 +3,21 @@ const S_LEFT = 1;
 const S_UP = 2;
 const S_DOWN = 3;
 const S_RIGHT = 4;
+
 // Variables to store touch start and end positions
 let startX = 0;
 let startY = 0;
 let endX = 0;
 let endY = 0;
 
+let graphicMode = true;
 let myBoard = readBoard(board) 
 let steps = [];
-showBoard(myBoard);
+if (graphicMode) {
+  showBoard_G(myBoard);
+} else { 
+  showBoard_T(myBoard);
+}
 document.addEventListener('keydown', k);
 
 // Check whether username is defined in cookie
@@ -131,7 +137,7 @@ function readBoard(b) {
     return result;
 }
 
-function showBoard(m) {
+function showBoard_T(m) {
     chars = {
       ' ': { output_char: '&nbsp;', fg_color: 'white', bg_color: 'black' },
       'H': { output_char: 'H', fg_color: 'green', bg_color: 'black' },
@@ -143,7 +149,7 @@ function showBoard(m) {
       'C': { output_char: 'B', fg_color: 'white', bg_color: 'cyan' },
       // change 'C' to 'G' for "goal".
     };
-    let html = '';
+    let html = "<font id='font' face='Courier New' size=5>";
     const rows = m.board;
     let bg_color;
     for (let i=0; i<rows.length; ++i) {
@@ -171,11 +177,54 @@ function showBoard(m) {
         }
         html += '<br />\n';
     }
+    html += '</font>\n';
     // if (m.best == 0) {
     //    document.getElementById("best").innerHTML = "---";
     //} else {
     //   document.getElementById("best").innerHTML = m.best;
     //}
+    document.getElementById("level").innerHTML = m.level;
+    document.getElementById("boardArea").innerHTML = html;
+}
+
+function showBoard_G(m) {
+    const PATH = 'http://ipv6.ncnu.org/Course/C_Programming/Exercise/Sokoban/';
+    const WALL = PATH+'wall.bmp';
+    cell = {
+      ' ': PATH+'blank.bmp',
+      'H': PATH+'wall.bmp',
+      'W': PATH+'worker.bmp',
+      'R': PATH+'worker_at_dest.bmp',
+      'B': PATH+'box.bmp',
+      'D': PATH+'destination.bmp',
+      'G': PATH+'arrival.bmp',
+      'C': PATH+'arrival.bmp',
+      // change 'C' to 'G' for "goal".
+    };
+    let html = "<P style='line-height: 0'>";
+    const rows = m.board;
+    let bg_color;
+    for (let i=0; i<rows.length; ++i) {
+        for (let j=0; j<rows[i].length; ++j) {
+            let c = rows[i][j];
+            let pos = {"row": i, "column": j};
+            if (isGoal(m.destinations, pos)) {
+                if (c == 'B') {
+                  c = 'G';
+                } else if (c == 'W') {
+                  c = 'R';
+                } else if (c == ' ') {
+                  c = 'D';
+                }
+            }
+            html += `<img src='${cell[c]}'>`;
+        }
+        if (rows[i].length < m.width) {
+            html += `<img src='${cell[c]}'>`.repeat(m.width - rows[i].length);
+        }
+        html += '<br />\n';
+    }
+    html += '</p>\n';
     document.getElementById("level").innerHTML = m.level;
     document.getElementById("boardArea").innerHTML = html;
 }
@@ -341,7 +390,11 @@ function moveWorker(b, d) {
     }
     break;
   }
-  showBoard(myBoard);
+  if (graphicMode) {
+    showBoard_G(myBoard);
+  } else { 
+    showBoard_T(myBoard);
+  }
   document.getElementById('step').innerHTML = steps.length;
   if (allArrived(myBoard.board, myBoard.destinations)) {
     message.innerHTML = 'All boxes arrived.';
