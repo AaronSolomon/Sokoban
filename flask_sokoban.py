@@ -6,7 +6,7 @@ from datetime import datetime
 from urllib.parse import quote
 app = Flask(__name__)
 
-BEST_FILE = "best.csv"
+BEST_FILE = "Boards/best.csv"
 
 @app.route('/')
 def main():
@@ -43,12 +43,15 @@ def readBoard(level):
 
 def readBest(fn):
     d = {}
-    with open(fn) as infile:
-        for line in infile:
-            ts, level, user, steps = line[:-1].split(',')
-            level = int(level)
-            if level not in d or len(steps) < d[level]:
-                d[level] = len(steps)
+    try:
+        with open(fn) as infile:
+            for line in infile:
+                ts, level, user, steps = line[:-1].split(',')
+                level = int(level)
+                if level not in d or len(steps) < d[level]:
+                    d[level] = len(steps)
+    except FileNotFoundError:
+        print('No BEST_FILE exists.  A new file will be created.')
     return d
 
 # === Main Program ===
