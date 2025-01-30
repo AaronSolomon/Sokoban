@@ -220,7 +220,7 @@ function showBoard_G(m) {
             html += `<img src='${cell[c]}'>`;
         }
         if (rows[i].length < m.width) {
-            html += `<img src='${cell[c]}'>`.repeat(m.width - rows[i].length);
+            html += `<img src='${cell[' ']}'>`.repeat(m.width - rows[i].length);
         }
         html += '<br />\n';
     }
@@ -243,6 +243,14 @@ function k(e) {
         if (nSize > 0)
             --nSize;
         font.size = nSize;
+        break;
+    case 't': // Toggle between text and graphic mod
+        graphicMode = !graphicMode;
+        if (graphicMode) {
+          showBoard_G(myBoard);
+        } else { 
+          showBoard_T(myBoard);
+        }
         break;
     case 'h':   // Left
     case 'ArrowLeft':
