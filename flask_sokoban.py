@@ -17,8 +17,7 @@ def main():
         return render_template('sokoban.html', level=level, 
             best=nBest, board=readBoard(level))
     except FileNotFoundError:
-        notifyNewLevel(level)
-        return render_template('under_construction.html', level=level)
+        return render_template('allFinished.html')
 
 @app.route('/record-and-next', methods=['POST'])
 def record():

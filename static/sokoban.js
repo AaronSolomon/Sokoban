@@ -408,7 +408,9 @@ function moveWorker(b, d) {
     message.innerHTML = 'All boxes arrived.';
     document.getElementById('inputUsername').value = username;
     document.getElementById('inputSteps').value = steps.join('');
-    document.getElementById('next').focus();
+    const next = document.getElementById('next');
+    next.style.backgroundColor = 'yellow';
+    next.focus();
   }
 }
 
