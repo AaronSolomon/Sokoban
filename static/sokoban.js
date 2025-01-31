@@ -188,7 +188,7 @@ function showBoard_T(m) {
 }
 
 function showBoard_G(m) {
-    const PATH = 'http://ipv6.ncnu.org/Course/C_Programming/Exercise/Sokoban/';
+    const PATH = '/static/';
     const WALL = PATH+'wall.bmp';
     cell = {
       ' ': PATH+'blank.bmp',

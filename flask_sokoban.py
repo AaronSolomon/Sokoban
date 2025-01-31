@@ -1,7 +1,7 @@
 # TODO:
-# 1. GUI
 
 from flask import Flask, render_template, request, redirect, make_response
+from flask_mail import Mail, Message
 from datetime import datetime
 from urllib.parse import quote
 app = Flask(__name__)
@@ -11,9 +11,14 @@ BEST_FILE = "Boards/best.csv"
 @app.route('/')
 def main():
     level = int(request.values.get('level', '1'))
-    nBest = best.get(level, '---')
-    return render_template('sokoban.html', level=level, 
-        best=nBest, board=readBoard(level))
+    try:
+        board = readBoard(level)
+        nBest = best.get(level, '---')
+        return render_template('sokoban.html', level=level, 
+            best=nBest, board=readBoard(level))
+    except FileNotFoundError:
+        notifyNewLevel(level)
+        return render_template('under_construction.html', level=level)
 
 @app.route('/record-and-next', methods=['POST'])
 def record():
@@ -53,6 +58,16 @@ def readBest(fn):
     except FileNotFoundError:
         print('No BEST_FILE exists.  A new file will be created.')
     return d
+
+def notifyNewLevel(level):
+    mail = Mail(app)
+    msg = Message(f'[Sokoban] Level {level-1} is solved', \
+        sender='solomon@kghs3.ncnu.net', \
+        recipients=['solomon@2025.ipv6.club.tw'])
+    msg.body = f'Please construct Level {level}.'
+    # msg.html = 'This is the <b>HTML</b> body'
+    with app.app_context():
+        mail.send(msg)
 
 # === Main Program ===
 # === Initialization ===
