@@ -11,6 +11,9 @@ BEST_FILE = "Boards/best.csv"
 @app.route('/')
 def main():
     level = int(request.values.get('level', '1'))
+    levelPlayed = int(request.cookies.get('levelPlayed', '1'))
+    if level > levelPlayed:  # Users are disallowed to jump to levels
+        level = levelPlayed  # which they haven't played
     try:
         board = readBoard(level)
         nBest = best.get(level, '---')
@@ -27,6 +30,7 @@ def record():
     steps = request.values.get('steps')
     response = make_response(redirect(f'/?level={level+1}'))
     if len(steps) > 0 and len(username) > 0:
+        response.set_cookie('levelPlayed', str(level+1), max_age=86400*365)
         if level not in best or len(steps) < best[level]:
             msg = f'你破了第 {level} 關的最佳紀錄!'
             response.set_cookie('msg', quote(msg))  # Chinese must be encoded

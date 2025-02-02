@@ -49,7 +49,9 @@ function purifyStr(s) {
 function updateUsername(u) {
   username=u;
   document.getElementById('username').innerHTML = u;
-  document.cookie = `username=${u}`;
+  let d = new Date();
+  d.setFullYear(d.getFullYear() + 1);
+  document.cookie = `username=${u}; expires = ${d.toUTCString()}`;
 }
 
 function editUsername () {
