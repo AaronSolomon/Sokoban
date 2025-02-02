@@ -191,7 +191,6 @@ function showBoard_T(m) {
 
 function showBoard_G(m) {
     const PATH = '/static/';
-    const WALL = PATH+'wall.bmp';
     cell = {
       ' ': PATH+'blank.bmp',
       'H': PATH+'wall.bmp',
