@@ -1,4 +1,7 @@
 # TODO:
+# 1. resize (especially on mobile phone)
+# 2. group progress
+# 3. Verify solution
 
 from flask import Flask, render_template, request, redirect, make_response
 from flask_mail import Mail, Message
@@ -7,6 +10,7 @@ from urllib.parse import quote
 app = Flask(__name__)
 
 BEST_FILE = "Boards/best.csv"
+PLAY_FILE = "play.csv"
 
 @app.route('/')
 def main():
@@ -17,6 +21,11 @@ def main():
     try:
         board = readBoard(level)
         nBest = best.get(level, '---')
+        port = request.environ.get('SERVER_PORT')
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        username = request.cookies.get('username', 'guest')
+        with open(PLAY_FILE, "a") as outfile:
+            print(f"{now},{level},{username},{port}", file=outfile)
         return render_template('sokoban.html', level=level, 
             best=nBest, board=readBoard(level))
     except FileNotFoundError:

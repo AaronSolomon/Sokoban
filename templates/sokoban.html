@@ -20,6 +20,7 @@
 
 <form action='/record-and-next' method=post>
 <input type=submit value='Next' id='next'>
+<!-- REMARK>Size: <button onClick='larger()'>+</button> <button onClick='smaller()'>-</button></REMARK -->
 <input type=hidden name='level' value={{level}}>
 <input type=hidden name='username' id='inputUsername'>
 <input type=hidden name='steps' id='inputSteps'>
@@ -33,6 +34,8 @@
 <button id='editUsername'>Username</button>
 
 <div hidden>Pre-fetch some image files in this division.
+<img src=/static/wall.bmp>
+<img src=/static/blank.bmp>
 <img src=/static/arrival.bmp>
 <img src=/static/worker_at_dest.bmp>
 </div>
@@ -43,7 +46,23 @@ const board =
   { "level": {{level}},
     "best": 0,
     "board": `{{board}}` };
+
+function larger() {
+    let scale = Number(document.body.style.zoom);
+    if (scale == 0)
+        scale = 1;
+    scale += 1;
+    document.body.style.zoom = scale;
+}
+
+function smaller() {
+    let scale = Number(document.body.style.zoom);
+    scale -= 1;
+    document.body.style.zoom = scale;
+}
+
 </script>
+
 
 <script src=/static/sokoban.js></script>
 </html>

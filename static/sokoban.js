@@ -228,6 +228,16 @@ function showBoard_G(m) {
     html += '</p>\n';
     document.getElementById("level").innerHTML = m.level;
     document.getElementById("boardArea").innerHTML = html;
+    // Auto-resize
+    // let width = window.innerWidth - 32*2;
+    // let height = window.innerHeight - 32*10;
+    // let scale = Math.min( (width / 32 / m.width),
+    //     (height / 32 / rows.length ) );    // BMP file is 32x32
+    // document.body.style.zoom = scale;
+    // alert("Width: " + width + " Height: " + height +
+    // " Scale: " + scale +
+    // " xScale: " + Math.floor(width / 32 / m.width) + " Height: " + 
+    // Math.floor(height / 32 / rows.length ) );
 }
 
 function k(e) {
