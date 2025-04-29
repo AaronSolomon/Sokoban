@@ -2,7 +2,7 @@
  HHH     H
 HH   H H H
 H  HDBBB H
-H HDBH HHH
+H HDCH HHH
 H  DDH H  
 HHHDDB HH 
   HDH B H 

@@ -22,10 +22,11 @@ def main():
         board = readBoard(level)
         nBest = best.get(level, '---')
         port = request.environ.get('SERVER_PORT')
+        remote = request.remote_addr
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         username = request.cookies.get('username', 'guest')
         with open(PLAY_FILE, "a") as outfile:
-            print(f"{now},{level},{username},{port}", file=outfile)
+            print(f"{now},{level},{username},{port},{remote}", file=outfile)
         return render_template('sokoban.html', level=level, 
             best=nBest, board=readBoard(level))
     except FileNotFoundError:
