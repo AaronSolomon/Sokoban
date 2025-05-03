@@ -36,8 +36,9 @@
 
 <tr><td colspan=2>
 <button id='editUsername'>Username</button>
-<button id='zoomIn'>Zoom In</button>
-<!-- button id='scale'>Scale</button -->
+<!-- button id='zoomIn'>Zoom In</button>
+<button id='zoomOut'>Zoom Out</button>
+< button id='scale'>Scale</button -->
 </td></tr></table>
 
 <div hidden>Pre-fetch some image files in this division.
@@ -72,4 +73,7 @@ function smaller() {
 
 
 <script src=/static/sokoban.js></script>
+<script>
+    document.body.style.zoom = scale() * 0.9;
+</script>
 </html>

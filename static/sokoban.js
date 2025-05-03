@@ -31,7 +31,8 @@ if ('username' in cookies) {
   updateUsername(username);
 }
 document.getElementById('editUsername').addEventListener('click', editUsername);
-document.getElementById('zoomIn').addEventListener('click', zoomIn);
+// document.getElementById('zoomIn').addEventListener('click', zoomIn);
+// document.getElementById('zoomOut').addEventListener('click', zoomOut);
 // document.getElementById('scale').addEventListener('click', scale);
 
 // Check whether the server sends a greeting message via cookie
@@ -475,13 +476,13 @@ function scale() {
   const rows = m.board;
   let width = window.innerWidth;
   // let height = window.innerHeight;
-  let height = window.innerHeight - 32*5; // Some heights are for buttons
+  let height = window.innerHeight - 32*2*4; // Some heights are for buttons
   let scale = Math.min( (width / 32 / m.width),
        (height / 32 / rows.length ) );    // BMP file is 32x32
-  let msg = "width:"+window.innerWidth + " height:" + window.innerHeight;
-  msg += "\nMap width:"+m.width+ " Height:"+m.height;
-  msg += "\nScale:" + scale;
-  alert(msg);
+  // let msg = "width:"+window.innerWidth + " height:" + window.innerHeight;
+  // msg += "\nMap width:"+m.width+ " Height:"+m.height;
+  // msg += "\nScale:" + scale;
+  // alert(msg);
   return scale;
   // let width = window.innerWidth - 32*2;
   // alert("Width: " + width + " Height: " + height +
@@ -490,6 +491,7 @@ function scale() {
   // Math.floor(height / 32 / rows.length ) );
 }
 
+/*
 function zoomIn() {
   // document.body.style.zoom = "1.5";
   // let s = scale();
@@ -497,5 +499,11 @@ function zoomIn() {
   // alert(msg);
   // Auto-resize
   // document.body.style.zoom = s;
-  document.body.style.zoom = scale() * 0.9;
+    document.body.style.zoom += 0.1;
+    console.log(document.body.style.zoom); 
 }
+
+function zoomOut() {
+    document.body.style.zoom -= 0.1;
+}
+*/
