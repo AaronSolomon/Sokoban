@@ -18,6 +18,8 @@
 <div id="boardArea"></div>
 <div id='message'></div>
 
+<table>
+<tr><td>
 <form action='/record-and-next' method=post>
 <input type=submit value='Next' id='next'>
 <!-- REMARK>Size: <button onClick='larger()'>+</button> <button onClick='smaller()'>-</button></REMARK -->
@@ -26,12 +28,17 @@
 <input type=hidden name='steps' id='inputSteps'>
 </form>
 
+<td>
 <form>
 <input type=submit value='Previous'>
 <input type=hidden name='level' value={{level-1}}>
 </form>
 
+<tr><td colspan=2>
 <button id='editUsername'>Username</button>
+<button id='zoomIn'>Zoom In</button>
+<!-- button id='scale'>Scale</button -->
+</td></tr></table>
 
 <div hidden>Pre-fetch some image files in this division.
 <img src=/static/wall.bmp>
