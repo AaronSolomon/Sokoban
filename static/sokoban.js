@@ -112,21 +112,25 @@ function readBoard(b) {
             case ' ':
                 row += ' ';
                 break;
-            case 'W':
+            case '+':   // player on goal
+                worker = { "row": i, "column": j };
+                destinations.push( {"row": i, "column": j } );
+                row += '@';
+                break;
+            case '@':
                 worker = { "row": i, "column": j };
                 row += c;
                 break;
-            case 'D':
+            case '.':
                 destinations.push( {"row": i, "column": j } );
                 row += ' ';
                 break;
-            case 'C':
-            case 'G':
+            case '*':   // box on goal
                 destinations.push( {"row": i, "column": j } );
-                row += 'B';
+                row += '$';
                 break;
-            case 'B':
-            case 'H':
+            case '$':
+            case '#':
                 row += c;
                 break;
             }
@@ -145,14 +149,13 @@ function readBoard(b) {
 function showBoard_T(m) {
     chars = {
       ' ': { output_char: '&nbsp;', fg_color: 'white', bg_color: 'black' },
-      'H': { output_char: 'H', fg_color: 'green', bg_color: 'black' },
-      'W': { output_char: 'W', fg_color: 'white', bg_color: 'black' },
-      'B': { output_char: 'B', fg_color: 'red', bg_color: 'black' },
-      'D': { output_char: ' ', fg_color: 'white', bg_color: 'cyan' },
+      '#': { output_char: '#', fg_color: 'green', bg_color: 'black' },// wall
+      '@': { output_char: '@', fg_color: 'white', bg_color: 'black' },// player
+      '$': { output_char: '$', fg_color: 'red', bg_color: 'black' },  // box
+      '.': { output_char: ' ', fg_color: 'white', bg_color: 'cyan' }, // goal
       // No-break space U+00A0
-      'G': { output_char: 'B', fg_color: 'white', bg_color: 'cyan' },
-      'C': { output_char: 'B', fg_color: 'white', bg_color: 'cyan' },
-      // change 'C' to 'G' for "goal".
+      '*': { output_char: '$', fg_color: 'white', bg_color: 'cyan' },
+      '+': { output_char: '@', fg_color: 'white', bg_color: 'cyan' },
     };
     let html = "<font id='font' face='Courier New' size=5>";
     const rows = m.board;
@@ -196,14 +199,12 @@ function showBoard_G(m) {
     const PATH = '/static/';
     cell = {
       ' ': PATH+'blank.bmp',
-      'H': PATH+'wall.bmp',
-      'W': PATH+'worker.bmp',
-      'R': PATH+'worker_at_dest.bmp',
-      'B': PATH+'box.bmp',
-      'D': PATH+'destination.bmp',
-      'G': PATH+'arrival.bmp',
-      'C': PATH+'arrival.bmp',
-      // change 'C' to 'G' for "goal".
+      '#': PATH+'wall.bmp',
+      '@': PATH+'worker.bmp',
+      '+': PATH+'worker_at_dest.bmp',   // player on goal
+      '$': PATH+'box.bmp',
+      '.': PATH+'destination.bmp',
+      '*': PATH+'arrival.bmp',          // box on goal
     };
     let html = "<P style='line-height: 0'>";
     const rows = m.board;
@@ -213,12 +214,12 @@ function showBoard_G(m) {
             let c = rows[i][j];
             let pos = {"row": i, "column": j};
             if (isGoal(m.destinations, pos)) {
-                if (c == 'B') {
-                  c = 'G';
-                } else if (c == 'W') {
-                  c = 'R';
+                if (c == '$') {
+                  c = '*';
+                } else if (c == '@') {
+                  c = '+';
                 } else if (c == ' ') {
-                  c = 'D';
+                  c = '.';
                 }
             }
             html += `<img src='${cell[c]}'>`;
@@ -339,13 +340,13 @@ function moveWorker(b, d) {
        // b.board[i][j] = ' ';
        // However, JavaScript strings are immutable
        b.board[i] = subst(b.board[i], j, ' ');
-       // b.board[i][j+1] = 'W';
-       b.board[i] = subst(b.board[i], j+1, 'W');
+       // b.board[i][j+1] = '@';
+       b.board[i] = subst(b.board[i], j+1, '@');
        b.worker = { "row": i, "column": j+1 };
        steps.push('R');
-    } else if (nextToWorker(b, d) == 'B' &&
+    } else if (nextToWorker(b, d) == '$' &&
     nextNextToWorker(b, d) == ' ') {
-       b.board[i] = b.board[i].slice(0, j) + ' WB' +
+       b.board[i] = b.board[i].slice(0, j) + ' @$' +
        b.board[i].slice(j+3);
        b.worker = { "row": i, "column": j+1 };
        steps.push('R');
@@ -355,13 +356,13 @@ function moveWorker(b, d) {
     if (nextToWorker(b, d) == ' ') {
        // b.board[i][j] = ' ';
        b.board[i] = subst(b.board[i], j, ' ');
-       // b.board[i][j-1] = 'W';
-       b.board[i] = subst(b.board[i], j-1, 'W');
+       // b.board[i][j-1] = '@';
+       b.board[i] = subst(b.board[i], j-1, '@');
        b.worker = { "row": i, "column": j-1 };
        steps.push('L');
-    } else if (nextToWorker(b, d) == 'B' &&
+    } else if (nextToWorker(b, d) == '$' &&
     nextNextToWorker(b, d) == ' ') {
-       b.board[i] = b.board[i].slice(0, j-2) + 'BW ' +
+       b.board[i] = b.board[i].slice(0, j-2) + '$@ ' +
        b.board[i].slice(j+1);
        b.worker = { "row": i, "column": j-1 };
        steps.push('L');
@@ -371,14 +372,14 @@ function moveWorker(b, d) {
     if (nextToWorker(b, d) == ' ') {
        // b.board[i][j] = ' ';
        b.board[i] = subst(b.board[i], j, ' ');
-       // b.board[i-1][j] = 'W';
-       b.board[i-1] = subst(b.board[i-1], j, 'W');
+       // b.board[i-1][j] = '@';
+       b.board[i-1] = subst(b.board[i-1], j, '@');
        b.worker = { "row": i-1, "column": j };
        steps.push('U');
-    } else if (nextToWorker(b, d) == 'B' &&
+    } else if (nextToWorker(b, d) == '$' &&
     nextNextToWorker(b, d) == ' ') {
-       b.board[i-2] = subst(b.board[i-2], j, 'B');
-       b.board[i-1] = subst(b.board[i-1], j, 'W');
+       b.board[i-2] = subst(b.board[i-2], j, '$');
+       b.board[i-1] = subst(b.board[i-1], j, '@');
        b.board[i  ] = subst(b.board[i  ], j, ' ');
        b.worker = { "row": i-1, "column": j };
        steps.push('U');
@@ -388,15 +389,15 @@ function moveWorker(b, d) {
     if (nextToWorker(b, d) == ' ') {
        // b.board[i][j] = ' ';
        b.board[i] = subst(b.board[i], j, ' ');
-       // b.board[i+1][j] = 'W';
-       b.board[i+1] = subst(b.board[i+1], j, 'W');
+       // b.board[i+1][j] = '@';
+       b.board[i+1] = subst(b.board[i+1], j, '@');
        b.worker = { "row": i+1, "column": j };
        steps.push('D');
-    } else if (nextToWorker(b, d) == 'B' &&
+    } else if (nextToWorker(b, d) == '$' &&
     nextNextToWorker(b, d) == ' ') {
        b.board[i  ] = subst(b.board[i  ], j, ' ');
-       b.board[i+1] = subst(b.board[i+1], j, 'W');
-       b.board[i+2] = subst(b.board[i+2], j, 'B');
+       b.board[i+1] = subst(b.board[i+1], j, '@');
+       b.board[i+2] = subst(b.board[i+2], j, '$');
        b.worker = { "row": i+1, "column": j };
        steps.push('D');
     }
@@ -443,7 +444,7 @@ function allArrived(board, dest) {
   let all = true;
   for (let i=0; i<dest.length; ++i) {
     let {row, column} = dest[i];
-    if (board[row][column] != 'B')
+    if (board[row][column] != '$')
       all = false; 
   }
   return all;

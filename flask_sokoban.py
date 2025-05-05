@@ -54,7 +54,7 @@ def record():
     return response
 
 def readBoard(level):
-    fn = 'Boards/map{:03}.txt'.format(level)
+    fn = 'Boards/maze{:03}.txt'.format(level)
     with open(fn) as infile:
         s = infile.read()
     return s
